@@ -1,0 +1,14 @@
+node_modules
+
+# Output
+dist
+
+# Config
+.env
+
+# logs
+logs
+
+# queries
+QUERIES.md
+.vercel
