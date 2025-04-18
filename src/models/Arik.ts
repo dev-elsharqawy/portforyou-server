@@ -94,8 +94,14 @@ export const ArikSchema = new Schema<IArik>({
     }),
   },
   process: {
-    process_heading: String,
-    process_paragraph: String,
+    process_heading: {
+      type: String,
+      default: "",
+    },
+    process_paragraph: {
+      type: String,
+      default: "",
+    },
     steps: {
       type: [ArikProcessStepSchema],
       default: Array(5).fill({
