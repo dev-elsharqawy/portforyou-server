@@ -21,6 +21,7 @@ export interface IUser extends Document {
     colors: string[];
     profession: string;
   };
+  isAdmin: boolean;
   createdAt: Date;
   updatedAt: Date;
   comparePassword(password: string): Promise<boolean>;
@@ -83,6 +84,10 @@ const UserSchema = new Schema<IUser>(
           default: "",
         },
         default: {},
+      },
+      isAdmin: {
+        type: Boolean,
+        default: false,
       },
   },
   {

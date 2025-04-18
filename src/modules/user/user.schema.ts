@@ -103,6 +103,7 @@ export const userTypeDefs = gql`
     arikTemplate: Arik
     selectedTemplates: [String]
     preferences: UserPreferences
+    isAdmin: Boolean!
   }
 
   input TestimonialClientInput {

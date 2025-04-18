@@ -18,7 +18,10 @@ export class UserService {
     return UserService.userService;
   }
 
-  async getAllUsers(): Promise<IUser[]> {
+  async getAllUsers(requestingUser: IUser): Promise<IUser[]> {
+    if (!requestingUser.isAdmin) {
+      throw new Error("You don't have permission to access all users");
+    }
     return User.find();
   }
 

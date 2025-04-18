@@ -10,8 +10,8 @@ export const userResolvers = {
   Query: {
     users: async (_: any, __: any, context: any) => {
       try {
-        // await authMiddleware.authenticateContext(context);
-        return await userService.getAllUsers();
+        const { user } = await authMiddleware.authenticateContext(context);
+        return await userService.getAllUsers(user);
       } catch (error) {
         const formattedError = formatError(error);
         throw new GraphQLError(JSON.stringify(formattedError), {
@@ -19,7 +19,7 @@ export const userResolvers = {
         });
       }
     },
-    user: async (_: any, { id }: { id: string }, context: any) => {
+    user: async (_: any, { id }: { id: string }) => {
       try {
         // await authMiddleware.authenticateContext(context);
         return await userService.getUserById(id);
