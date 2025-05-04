@@ -11,7 +11,6 @@ import {
   IArikLogos,
   IArikProcessStep,
   ITemplateAnalytics,
-  IVisitorInfo,
 } from "../lib/types/template.types";
 import { VisitorSchema } from "./Visitor";
 
