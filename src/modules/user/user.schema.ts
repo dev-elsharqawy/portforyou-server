@@ -87,6 +87,65 @@ export const userTypeDefs = gql`
     analytics: TemplateAnalytics
   }
 
+  # Nova Template Types
+  type NovaSocialLink {
+    name: String
+    url: String
+    icon: String
+  }
+
+  type NovaContact {
+    heading: String
+    subheading: String
+    email: String
+    phone: String
+    address: String
+    social_links: [NovaSocialLink]
+  }
+
+  type NovaSkill {
+    id: String
+    name: String
+    percentage: Int
+  }
+
+  type NovaProject {
+    id: String
+    title: String
+    description: String
+    image: String
+    image_id: String
+    tags: [String]
+    link: String
+  }
+
+  type NovaTestimonial {
+    id: String
+    name: String
+    position: String
+    company: String
+    text: String
+    avatar: String
+    avatar_id: String
+  }
+
+  type NovaHero {
+    heading: String
+    subheading: String
+    description: String
+    image: String
+    image_id: String
+  }
+
+  type Nova {
+    hero: NovaHero
+    skills: [NovaSkill]
+    projects: [NovaProject]
+    testimonials: [NovaTestimonial]
+    contact: NovaContact
+    analytics: TemplateAnalytics
+  }
+
   type UserPreferences {
     colors: [String]!
     profession: String!
@@ -101,6 +160,7 @@ export const userTypeDefs = gql`
     createdAt: String!
     updatedAt: String!
     arikTemplate: Arik
+    novaTemplate: Nova
     selectedTemplates: [String]
     preferences: UserPreferences
     isAdmin: Boolean!
@@ -167,6 +227,64 @@ export const userTypeDefs = gql`
     img_id: String
   }
 
+  # Nova Template Input Types
+  input NovaSocialLinkInput {
+    name: String
+    url: String
+    icon: String
+  }
+
+  input NovaContactInput {
+    heading: String
+    subheading: String
+    email: String
+    phone: String
+    address: String
+    social_links: [NovaSocialLinkInput]
+  }
+
+  input NovaSkillInput {
+    id: String
+    name: String
+    percentage: Int
+  }
+
+  input NovaProjectInput {
+    id: String
+    title: String
+    description: String
+    image: String
+    image_id: String
+    tags: [String]
+    link: String
+  }
+
+  input NovaTestimonialInput {
+    id: String
+    name: String
+    position: String
+    company: String
+    text: String
+    avatar: String
+    avatar_id: String
+  }
+
+  input NovaHeroInput {
+    heading: String
+    subheading: String
+    description: String
+    image: String
+    image_id: String
+  }
+
+  input NovaInput {
+    hero: NovaHeroInput
+    skills: [NovaSkillInput]
+    projects: [NovaProjectInput]
+    testimonials: [NovaTestimonialInput]
+    contact: NovaContactInput
+  }
+
   input VisitorInput {
     ip: String!
     country: String!
@@ -206,6 +324,7 @@ export const userTypeDefs = gql`
     updateUser(id: ID!, input: UpdateUserInput!): User
     deleteUser(id: ID!): Boolean
     updateUserTemplate(id: ID!, template: ArikInput!): User
+    updateNovaTemplate(id: ID!, template: NovaInput!): User
     addSelectedTemplate(id: ID!, templateName: String!): User
     removeSelectedTemplate(id: ID!, templateName: String!): User
     updateUserPreferences(id: ID!, preferences: UserPreferencesInput!): User

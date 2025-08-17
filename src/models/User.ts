@@ -1,5 +1,6 @@
 import mongoose, { Schema, Document } from "mongoose";
 import { IArik, ArikSchema } from "./Arik";
+import { INova, NovaSchema } from "./Nova";
 import { SubscriptionType } from "../lib/constants";
 import bcrypt from "bcryptjs";
 
@@ -15,6 +16,7 @@ export interface IUser extends Document {
   loginAttempts: number;
   locked: boolean;
   arikTemplate: IArik;
+  novaTemplate: INova;
   selectedTemplates: string[];
   subscription: SubscriptionType;
   preferences: {
@@ -60,10 +62,14 @@ const UserSchema = new Schema<IUser>(
       type: ArikSchema,
       default: {},
     },
+    novaTemplate: {
+      type: NovaSchema,
+      default: {},
+    },
     selectedTemplates: [
       {
         type: String,
-    },
+      },
     ],
     subscription: {
       type: String,
@@ -71,24 +77,24 @@ const UserSchema = new Schema<IUser>(
       default: SubscriptionType.TRIAL,
     },
     preferences: {
-        colors: {
-          type: [String],
-          default: [],
-        },
-        profession: {
-          type: String,
-          default: "",
-        },
-        email: {
-          type: String,
-          default: "",
-        },
-        default: {},
+      colors: {
+        type: [String],
+        default: [],
       },
-      isAdmin: {
-        type: Boolean,
-        default: false,
+      profession: {
+        type: String,
+        default: "",
       },
+      email: {
+        type: String,
+        default: "",
+      },
+      default: {},
+    },
+    isAdmin: {
+      type: Boolean,
+      default: false,
+    },
   },
   {
     timestamps: true,

@@ -60,6 +60,62 @@ export interface IArikWorkExperience {
   img_id?: string;
 }
 
+export interface INovaHero {
+  heading: string;
+  subheading: string;
+  description: string;
+  image: string;
+  image_id?: string;
+}
+
+export interface INovaSkill {
+  id: string;
+  name: string;
+  percentage: number;
+}
+
+export interface INovaProject {
+  id: string;
+  title: string;
+  description: string;
+  image: string;
+  image_id?: string;
+  tags: string[];
+  link?: string;
+}
+
+export interface INovaTestimonial {
+  id: string;
+  name: string;
+  position: string;
+  company: string;
+  text: string;
+  avatar: string;
+  avatar_id?: string;
+}
+
+export interface INovaContact {
+  heading: string;
+  subheading: string;
+  email: string;
+  phone: string;
+  address: string;
+  social_links: {
+    name: string;
+    url: string;
+    icon: string;
+  }[];
+}
+
+export interface INovaTemplate {
+  hero: INovaHero;
+  skills: INovaSkill[];
+  projects: INovaProject[];
+  testimonials: INovaTestimonial[];
+  contact: INovaContact;
+  analytics?: ITemplateAnalytics;
+}
+
 export interface IVisitorInfo {
   ip: string;
   country: string;

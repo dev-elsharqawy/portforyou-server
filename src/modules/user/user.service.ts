@@ -5,6 +5,7 @@ import { createDotNotationUpdate } from "../../lib/utils/object.utils";
 import { IArikTemplate } from "../../lib/types/template.types";
 import { handleMongoError } from "../../lib/utils/error.utils";
 import { Visitor } from "../../models/Visitor";
+import { INovaTemplate } from "../../lib/types/template.types"; // Import INovaTemplate
 
 export class UserService {
   private static userService: UserService;
@@ -113,6 +114,39 @@ export class UserService {
     }
   }
 
+  async updateNovaTemplate(
+    id: string,
+    template: Partial<INovaTemplate>
+  ): Promise<IUser | null> {
+    try {
+      // Create a deep copy to avoid modifying the input
+      const updatedTemplate = JSON.parse(JSON.stringify(template));
+
+      // Create update object with dot notation
+      const updateObj = createDotNotationUpdate("novaTemplate", updatedTemplate);
+
+      // Only proceed if there are actual updates
+      if (Object.keys(updateObj).length === 0) {
+        return User.findById(id);
+      }
+
+      const updatedUser = await User.findByIdAndUpdate(
+        id,
+        { $set: updateObj },
+        { new: true, runValidators: true }
+      );
+
+      if (!updatedUser) {
+        throw new Error(`User not found with id: ${id}`);
+      }
+
+      return updatedUser;
+    } catch (error) {
+      logger.error("Error updating nova template:", { error, userId: id });
+      throw error;
+    }
+  }
+
   async addSelectedTemplate(
     id: string,
     templateName: string
@@ -200,7 +234,6 @@ export class UserService {
       });
 
       // Update the analytics for the template
-      // For now, we're only handling arikTemplate
       if (templateName === 'arik') {
         // Check if the user has the arikTemplate field
         if (!user.arikTemplate) {
@@ -212,6 +245,22 @@ export class UserService {
           {
             $push: { "arikTemplate.analytics.visitors": visitor },
             $inc: { "arikTemplate.analytics.totalVisits": 1 },
+          },
+          { new: true }
+        );
+
+        return !!updateResult;
+      } else if (templateName === 'nova') {
+        // Check if the user has the novaTemplate field
+        if (!user.novaTemplate) {
+          throw new Error(`Nova template not found for user ${userId}`);
+        }
+        
+        const updateResult = await User.findByIdAndUpdate(
+          userId,
+          {
+            $push: { "novaTemplate.analytics.visitors": visitor },
+            $inc: { "novaTemplate.analytics.totalVisits": 1 },
           },
           { new: true }
         );
@@ -239,13 +288,18 @@ export class UserService {
         throw new Error(`User not found with id: ${userId}`);
       }
 
-      // For now, we're only handling arikTemplate
       if (templateName === 'arik') {
         // Check if the user has the arikTemplate field
         if (!user.arikTemplate) {
           throw new Error(`Arik template not found for user ${userId}`);
         }
         return user.arikTemplate.analytics || { visitors: [], totalVisits: 0 };
+      } else if (templateName === 'nova') {
+        // Check if the user has the novaTemplate field
+        if (!user.novaTemplate) {
+          throw new Error(`Nova template not found for user ${userId}`);
+        }
+        return user.novaTemplate.analytics || { visitors: [], totalVisits: 0 };
       }
 
       // For future template types, add handling here

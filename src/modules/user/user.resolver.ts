@@ -136,6 +136,30 @@ export const userResolvers = {
         });
       }
     },
+    updateNovaTemplate: async (
+      _: any,
+      { id, template }: { id: string; template: any },
+      context: any
+    ) => {
+      try {
+        const { user } = await authMiddleware.authenticateContext(context);
+        if (user._id.toString() !== id) {
+          throw new GraphQLError('Not authorized to update this user template', {
+            extensions: { code: 'FORBIDDEN', http: { status: 403 } },
+          });
+        }
+
+        return await userService.updateNovaTemplate(id, template);
+      } catch (error) {
+        if (error instanceof GraphQLError) {
+          throw error;
+        }
+        const formattedError = formatError(error);
+        throw new GraphQLError(JSON.stringify(formattedError), {
+          extensions: { http: formattedError },
+        });
+      }
+    },
     addSelectedTemplate: async (
       _: any,
       { id, templateName }: { id: string; templateName: string },
